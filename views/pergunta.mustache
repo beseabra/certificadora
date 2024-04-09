@@ -1,38 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MathQuest</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathQuest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .welcome {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .question {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .alternatives {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .alternatives label {
+            cursor: pointer;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <div style="padding: 3.2rem; font-size: 1.3rem;">
-    <p>Ola, Fulano</p>
-    <p>Responda a questão abaixo:</p>
-  </div>
+  <div class="container">
+    <div class="welcome">
+      <h1>Olá, Fulano</h1>
+      <p>Responda a questão abaixo:</p>
+    </div>
 
-  <div style="padding: 3.2rem; text-align: center; font-size: 1.1rem;">
-    <p>{{pergunta.pergunta}}</p>
-    <form id="respostaForm" style="display: flex; justify-content:center; gap: 10px;
-    margin: 1rem;">
+    <div class="question">
+      <p>{{pergunta.pergunta}}</p>
+    </div>
+
+    <form id="respostaForm" class="alternatives" style="display: flex;flex-direction: row;justify-content: center;">
       <input type="radio" id="alternativa1" name="resposta" value="alternativa1">
-      <label for="alternativa1">Alternativa 1</label><br>
+      <label for="alternativa1">Alternativa 1</label>
       <input type="radio" id="alternativa2" name="resposta" value="alternativa2">
-      <label for="alternativa2">alternativa 2</label><br>
+      <label for="alternativa2">Alternativa 2</label>
       <input type="radio" id="alternativa3" name="resposta" value="alternativa3">
-      <label for="alternativa3">alternativa 3</label><br>
+      <label for="alternativa3">Alternativa 3</label>
       <input type="radio" id="alternativa4" name="resposta" value="alternativa4">
-      <label for="alternativa4">alternativa 4</label><br>
+      <label for="alternativa4">Alternativa 4</label>
     </form>
-        <button type="button" id="dicaButton">Dica</button>
-      <button type="button" id="enviarButton">Enviar Resposta</button> 
+
+    <div class="button-container">
+      <button type="button" id="dicaButton">Dica</button>
+      <button type="button" id="enviarButton">Enviar Resposta</button>
+    </div>
   </div>
 
   <script> 
     document.getElementById('enviarButton').addEventListener('click', function() {
-      var resposta = document.querySelector('input[name="resposta"]:checked').value;
-      console.log('Resposta selecionada:', resposta);
-      // Aqui você pode enviar a resposta para o backend ou realizar outras ações necessárias
+      var resposta = document.querySelector('input[name="resposta"]:checked');
+      if (resposta) {
+        console.log('Resposta selecionada:', resposta.value);
+        // Aqui você pode enviar a resposta para o backend ou realizar outras ações necessárias
+      } else {
+        alert('Por favor, selecione uma resposta antes de enviar.');
+      }
     });
   </script>
 </body>
