@@ -4,7 +4,7 @@ Projeto Certificadora:
 Grupo:
 - George Oliveira		    RA: 2312557
 - Andrei Rezende        RA:
-- Bernardo Seabra		    RA:
+- Bernardo Seabra		    RA: 2209411
 - Alessandro
 
 *
