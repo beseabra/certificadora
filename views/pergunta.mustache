@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathQuest</title>
+</head>
+<body>
+  <div style="padding: 3.2rem; font-size: 1.3rem;">
+    <p>Ola, Fulano</p>
+    <p>Responda a questão abaixo:</p>
+  </div>
+
+  <div style="padding: 3.2rem; text-align: center; font-size: 1.1rem;">
+    <p>{{pergunta.pergunta}}</p>
+    <form id="respostaForm" style="display: flex; justify-content:center; gap: 10px;
+    margin: 1rem;">
+      <input type="radio" id="alternativa1" name="resposta" value="alternativa1">
+      <label for="alternativa1">Alternativa 1</label><br>
+      <input type="radio" id="alternativa2" name="resposta" value="alternativa2">
+      <label for="alternativa2">alternativa 2</label><br>
+      <input type="radio" id="alternativa3" name="resposta" value="alternativa3">
+      <label for="alternativa3">alternativa 3</label><br>
+      <input type="radio" id="alternativa4" name="resposta" value="alternativa4">
+      <label for="alternativa4">alternativa 4</label><br>
+    </form>
+        <button type="button" id="dicaButton">Dica</button>
+      <button type="button" id="enviarButton">Enviar Resposta</button> 
+  </div>
+
+  <script> 
+    document.getElementById('enviarButton').addEventListener('click', function() {
+      var resposta = document.querySelector('input[name="resposta"]:checked').value;
+      console.log('Resposta selecionada:', resposta);
+      // Aqui você pode enviar a resposta para o backend ou realizar outras ações necessárias
+    });
+  </script>
+</body>
+</html>

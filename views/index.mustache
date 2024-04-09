@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Perguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 4rem;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        select {
+            padding: 5px;
+            border-radius: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .question-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px;
+            max-width: 500px;
+            width: calc(50% - 20px); /* Largura de 50% com uma margem de 10px em cada lado */
+            float: left; /* Alinha as caixas de perguntas lado a lado */
+            box-sizing: border-box; /* Garante que a largura inclua a borda e o preenchimento */
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        strong {
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .question-container {
+                width: 100%; /* Altera a largura para 100% em telas menores */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<form action="/" method="get">
+    <label for="nivel">Filtrar por Nível:</label>
+    <select name="nivel" id="nivel">
+        <option value="">Todos os Níveis</option>
+        <option value="1">Nível 1</option>
+        <option value="2">Nível 2</option>
+        <option value="3">Nível 3</option>
+    </select>
+    <button type="submit">Filtrar</button>
+</form>
+
+<h1>Lista de Perguntas</h1>
+
+{{#perguntas}}
+<div class="question-container">
+    <a href="/pergunta/{{ id }}">Questão {{ id }}</a>
+    <br>
+    <strong>Pontos:</strong> {{pontos}}
+    <br>
+    <strong>Nível:</strong> {{nivel}}
+</div>
+{{/perguntas}}
+
+</body>
+</html>
