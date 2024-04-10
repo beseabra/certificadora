@@ -30,6 +30,7 @@
             color: white;
             border: none;
             cursor: pointer;
+            margin-left: 10px; /* Adiciona margem para separar o botão do título */
         }
         .question-container {
             background-color: white;
@@ -69,17 +70,47 @@
     <button type="submit">Filtrar</button>
 </form>
 
-<h1>Lista de Perguntas</h1>
+<h1>Lista de Perguntas <button onclick="reordenarPerguntas()">Reordenar</button></h1>
 
-{{#perguntas}}
-<div class="question-container">
-    <a href="/pergunta/{{ id }}">Questão {{ id }}</a>
-    <br>
-    <strong>Pontos:</strong> {{pontos}}
-    <br>
-    <strong>Nível:</strong> {{nivel}}
+<div id="perguntas-container">
+    {{#perguntas}}
+    <div class="question-container">
+        <a href="/pergunta/{{ id }}">Questão {{ id }}</a>
+        <br>
+        <strong>Pontos:</strong> {{pontos}}
+        <br>
+        <strong>Nível:</strong> {{nivel}}
+    </div>
+    {{/perguntas}}
 </div>
-{{/perguntas}}
+
+<script>
+    function reordenarPerguntas() {
+        var perguntasContainer = document.getElementById('perguntas-container');
+        var perguntas = perguntasContainer.querySelectorAll('.question-container');
+        var perguntasArray = Array.from(perguntas);
+
+        perguntasArray.forEach(function(pergunta) {
+            perguntasContainer.removeChild(pergunta);
+        });
+
+        shuffleArray(perguntasArray);
+
+        perguntasArray.forEach(function(pergunta) {
+            perguntasContainer.appendChild(pergunta);
+        });
+    }
+
+    // Função para embaralhar um array
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+</script>
 
 </body>
 </html>
