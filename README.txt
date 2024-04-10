@@ -6,6 +6,7 @@ Grupo:
 - Andrei Rezende        RA:
 - Bernardo Seabra		    RA: 2209411
 - Alessandro
+- Felipe Teodoro        RA: 2266369
 
 *
   Para testar o projeto é necessário ter o banco de dados já criado.
