@@ -4,7 +4,7 @@ const sequelize = require("../helpers/postgres");
 // Cria a tabela 'Perguntas' com o Model
 const PerguntaModel = sequelize.define('pergunta', {
   pergunta: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false
   },
   pontos: {
