@@ -52,6 +52,32 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        .errada{
+          background-color: #f8d7da;
+          color: #721c24;
+          font-size: 16px;
+          padding: 10px;
+          margin-top: 10px;
+          border: 1px solid #c3e6cb;
+          border-radius: 5px;
+        }
+        
+        .correta{
+          background-color: #d4edda;
+          color: #155724;
+          font-size: 16px;
+          padding: 10px;
+          margin-top: 10px;
+          border: 1px solid #f5c6cb;
+          border-radius: 5px;
+        }
+
+        button:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+        }
+
     </style>
 </head>
 <body>
@@ -66,29 +92,64 @@
     </div>
 
     <form id="respostaForm" class="alternatives" style="display: flex;flex-direction: row;justify-content: center;">
-      <input type="radio" id="alternativa1" name="resposta" value="alternativa1">
-      <label for="alternativa1">{{pergunta.opcaoCerta}} 1</label>
-      <input type="radio" id="alternativa2" name="resposta" value="alternativa2">
+      <input type="radio" id="alternativa1" name="resposta" value="{{pergunta.opcaoCerta}}">
+      <label for="alternativa1">{{pergunta.opcaoCerta}}</label>
+      <input type="radio" id="alternativa2" name="resposta" value="{{pergunta.opcao1}}">
       <label for="alternativa2">{{pergunta.opcao1}}</label>
-      <input type="radio" id="alternativa3" name="resposta" value="alternativa3">
+      <input type="radio" id="alternativa3" name="resposta" value="{{pergunta.opcao2}}">
       <label for="alternativa3">{{pergunta.opcao2}}</label>
-      <input type="radio" id="alternativa4" name="resposta" value="alternativa4">
+      <input type="radio" id="alternativa4" name="resposta" value="{{pergunta.opcao3}}">
       <label for="alternativa4">{{pergunta.opcao3}}</label>
     </form>
 
     <div class="button-container">
-      <button type="button" onclick="window.location.href='/';">Voltar</button>
       <button type="button" id="dicaButton">Dica</button>
       <button type="button" id="enviarButton">Enviar Resposta</button>
+      <button type="button" id="voltar" onclick="window.location.href='/';">Voltar</button>
     </div>
   </div>
 
-  <script> 
-    document.getElementById('enviarButton').addEventListener('click', function() {
+  <script>
+    div = document.querySelector('.container');
+    botao = document.getElementById('enviarButton');
+    botao.addEventListener('click', async function() {
       var resposta = document.querySelector('input[name="resposta"]:checked');
+      var questionId = {{pergunta.id}};
+      try {
+        const response = await fetch('/question/update-resolvido/{{pergunta.id}}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+        if(response.ok) {
+          console.log(data.message);
+        } else {
+          console.error(data.message);
+        }
+      } catch(error) {
+        console.error('Erro ao enviar solicitação:', error);
+      }
+
       if (resposta) {
-        console.log('Resposta selecionada:', resposta.value);
-        // Aqui você pode enviar a resposta para o backend ou realizar outras ações necessárias
+        aux = resposta.value;
+        console.log(aux)
+        console.log(typeof aux)
+        if(aux == '{{pergunta.opcaoCerta}}')
+        {
+          var novoParagrafo = document.createElement('p');
+          novoParagrafo.innerText = "Resposta Correta."
+          novoParagrafo.classList.add('correta');
+          div.appendChild(novoParagrafo);
+          botao.disabled = true;
+        }else{
+          var novoParagrafo = document.createElement('p');
+          novoParagrafo.innerText = "Resposta Errada."
+          novoParagrafo.classList.add('errada');
+          div.appendChild(novoParagrafo);
+          botao.disabled = true;
+        }
       } else {
         alert('Por favor, selecione uma resposta antes de enviar.');
       }

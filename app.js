@@ -65,3 +65,20 @@ app.use("/install", require('./control/installAPI'))
 app.listen(3000, () => {
   console.log('Acessar http://localhost:3000');
 });
+
+
+// Rota para atualizar quando uma questão é resolvida
+app.post('/question/update-resolvido/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const updateQuestion = await perguntasModel.updateResolvido(id);
+    if(updateQuestion) {
+      res.json({ status: "sucess", message: "Pergunta resolvida atualizada com sucesso"});
+    } else {
+      res.status(404).json({ status: "error", message: "Pergunta nao encontrada" });
+    }
+  } catch (error) {
+    console.error("Error ao atualizar pergunta resolvida: ", error);
+    res.status(500).json({ status: "error", message: "Error ao atualizar pergunta resolvida"});
+  }
+});

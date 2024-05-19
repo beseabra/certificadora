@@ -22,10 +22,10 @@ const PerguntaModel = sequelize.define('pergunta', {
   opcao2: {
     type: DataTypes.STRING
   },
-  opcao3:{
+  opcao3: {
     type: DataTypes.STRING
   },
-  resolvido:{
+  resolvido: {
     type: DataTypes.BOOLEAN
   }
 }, {
@@ -40,10 +40,11 @@ console.log("A tabela foi atualizada!");
 module.exports = {
 
   // SELECT dos dados da tabela
+
   list: async function (filtro) {
     let queryOptions = {};
     if (filtro) {
-      queryOptions.where = filtro;
+    queryOptions.where = filtro;
     }
     const perguntas = await PerguntaModel.findAll(queryOptions);
     return perguntas;
@@ -53,7 +54,7 @@ module.exports = {
   // INSERT de dados na tabela
   save: async function (pergunta, pontos, nivel, opcaoCerta, opcao1, opcao2, opcao3, resolvido) {
     console.log("...");
-    console.log("Dados recebidos:", pergunta, pontos, nivel, opcaoCerta, opcao1, opcao2, opcao3, resolvido);
+    console.log("Dados recebidos:",pergunta,pontos,nivel,opcaoCerta,opcao1,opcao2,opcao3,resolvido);
     const pergIns = await PerguntaModel.create({
       pergunta: pergunta,
       pontos: pontos,
@@ -62,7 +63,7 @@ module.exports = {
       opcao1:opcao1,
       opcao2: opcao2,
       opcao3: opcao3,
-      resolvido: resolvido,
+      resolvido: resolvido
     });
     return pergIns;
   },
@@ -72,6 +73,18 @@ module.exports = {
     const pergunta = await PerguntaModel.findByPk(id);
     return pergunta;
   },
+
+
+  // Atualiza resolvido para true no banco de dados
+  updateResolvido: async function(id) {
+    const pergunta = await PerguntaModel.findByPk(id);
+    if(pergunta) {
+      await pergunta.update({ resolvido: true});
+      return pergunta;
+    }
+    return null;
+  },
+  
   // Exporta o Model
   Model: PerguntaModel
 };
