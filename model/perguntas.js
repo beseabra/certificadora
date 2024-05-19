@@ -14,16 +14,19 @@ const PerguntaModel = sequelize.define('pergunta', {
     type: DataTypes.INTEGER
   },
   opcaoCerta: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   opcao1: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   opcao2: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   opcao3:{
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
+  },
+  resolvido:{
+    type: DataTypes.BOOLEAN
   }
 }, {
   timestamps: false // Desabilita os campos de timestamps
@@ -48,17 +51,18 @@ module.exports = {
 
 
   // INSERT de dados na tabela
-  save: async function (pergunta, pontos, nivel,opcaoCerta,opcao1,opcao2,opcao3) {
+  save: async function (pergunta, pontos, nivel, opcaoCerta, opcao1, opcao2, opcao3, resolvido) {
     console.log("...");
-    console.log("Dados recebidos:", pergunta, pontos,nivel,opcaoCerta,opcao1,opcao2,opcao3);
+    console.log("Dados recebidos:", pergunta, pontos, nivel, opcaoCerta, opcao1, opcao2, opcao3, resolvido);
     const pergIns = await PerguntaModel.create({
       pergunta: pergunta,
       pontos: pontos,
       nivel: nivel,
-      opcaoCerta : opcaoCerta,
-      opcao1 :opcao1,
-      opcao2 : opcao2,
-      opcao3 : opcao3,
+      opcaoCerta: opcaoCerta,
+      opcao1:opcao1,
+      opcao2: opcao2,
+      opcao3: opcao3,
+      resolvido: resolvido,
     });
     return pergIns;
   },
