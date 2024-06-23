@@ -1,8 +1,11 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../helpers/postgres");
+const {ResolucaoModel} = require('./resolucao');
+
+
 
 // Cria a tabela 'Perguntas' com o Model
-const PerguntaModel = sequelize.define('pergunta', {
+const PerguntaModel = sequelize.define('pergunta', {  
   pergunta: {
     type: DataTypes.TEXT,
     allowNull: false
@@ -25,7 +28,7 @@ const PerguntaModel = sequelize.define('pergunta', {
   opcao3: {
     type: DataTypes.STRING
   },
-  resolvido: {
+  liberado: {
     type: DataTypes.BOOLEAN
   }
 }, {
@@ -33,6 +36,14 @@ const PerguntaModel = sequelize.define('pergunta', {
 });
 
 // Sincroniza com o BD
+PerguntaModel.hasMany(ResolucaoModel, {
+  as: 'resolucoes'
+});
+ResolucaoModel.belongsTo(PerguntaModel, {
+  foreignKey: 'perguntaId',
+  as: 'pergunta'
+});
+
 PerguntaModel.sync({ alter: true }); // Atualiza o BD
 console.log("A tabela foi atualizada!");
 
@@ -52,9 +63,9 @@ module.exports = {
 
 
   // INSERT de dados na tabela
-  save: async function (pergunta, pontos, nivel, opcaoCerta, opcao1, opcao2, opcao3, resolvido) {
+  save: async function (pergunta, pontos, nivel, opcaoCerta, opcao1, opcao2, opcao3, liberado) {
     console.log("...");
-    console.log("Dados recebidos:",pergunta,pontos,nivel,opcaoCerta,opcao1,opcao2,opcao3,resolvido);
+    console.log("Dados recebidos:",pergunta,pontos,nivel,opcaoCerta,opcao1,opcao2,opcao3, liberado);
     const pergIns = await PerguntaModel.create({
       pergunta: pergunta,
       pontos: pontos,
@@ -63,7 +74,7 @@ module.exports = {
       opcao1:opcao1,
       opcao2: opcao2,
       opcao3: opcao3,
-      resolvido: resolvido
+      liberado: liberado
     });
     return pergIns;
   },
@@ -76,11 +87,14 @@ module.exports = {
 
 
   // Atualiza resolvido para true no banco de dados
-  updateResolvido: async function(id) {
+  liberaPergunta: async function(id) {
+
     const pergunta = await PerguntaModel.findByPk(id);
-    if(pergunta) {
-      await pergunta.update({ resolvido: true});
-      return pergunta;
+    const nivel = pergunta.nivel;
+    const perguntas = await PerguntaModel.findAll({where: {nivel: nivel+1}});
+    if(perguntas) {
+      await PerguntaModel.update({ liberado: true}, {where: {nivel: nivel+1}});
+      return perguntas;
     }
     return null;
   },

@@ -7,7 +7,7 @@ const path = require('path');
 require("dotenv").config();
 
 const perguntasModel = require('./model/perguntas');
-
+const { list, getResolucao, updateResolvido, updateQtdResolucao } = require('./model/resolucao');
 
 const app = express();
 
@@ -33,8 +33,10 @@ app.get('/', async (req, res) => {
     }
     // Recupera todas as perguntas do banco de dados
     const perguntas = await perguntasModel.list(filtro);
+    const resolucoes = await list({ usuarioId: 1 })
+
     // Renderiza o template Mustache e passa os dados das perguntas
-    res.render('index', { perguntas: perguntas });
+    res.render('index', { perguntas: perguntas, resolucoes: resolucoes });
   } catch (error) {
     console.error('Erro ao recuperar perguntas:', error);
     res.status(500).send('Erro ao carregar perguntas');
@@ -46,7 +48,8 @@ app.get('/', async (req, res) => {
 app.get('/pergunta/:id', async (req, res) => {
   try {
     const pergunta = await perguntasModel.getPergunta(req.params.id);
-    res.render('pergunta', { pergunta: pergunta });
+    const resolucao = await getResolucao(req.params.id);
+    res.render('pergunta', { pergunta: pergunta, resolucao: resolucao });
   } catch (error) {
     console.error('Erro ao recuperar pergunta:', error);
     res.status(500).send('Erro ao carregar pergunta');
@@ -71,14 +74,18 @@ app.listen(3000, () => {
 app.post('/question/update-resolvido/:id', async (req, res) => {
   const id = req.params.id;
   try {
-    const updateQuestion = await perguntasModel.updateResolvido(id);
-    if(updateQuestion) {
-      res.json({ status: "sucess", message: "Pergunta resolvida atualizada com sucesso"});
+    const updateQuestion = await updateResolvido(id);
+    const atualizaQtd = await updateQtdResolucao(id);
+    const autalizaLibera = await perguntasModel.liberaPergunta(id);
+    
+    if (updateQuestion) {
+      res.json({ status: "sucess", message: "Pergunta resolvida atualizada com sucesso" });
     } else {
       res.status(404).json({ status: "error", message: "Pergunta nao encontrada" });
     }
   } catch (error) {
     console.error("Error ao atualizar pergunta resolvida: ", error);
-    res.status(500).json({ status: "error", message: "Error ao atualizar pergunta resolvida"});
+    res.status(500).json({ status: "error", message: "Error ao atualizar pergunta resolvida" });
   }
+
 });

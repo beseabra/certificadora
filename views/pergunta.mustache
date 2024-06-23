@@ -115,27 +115,9 @@
     botao.addEventListener('click', async function() {
       var resposta = document.querySelector('input[name="resposta"]:checked');
       var questionId = {{pergunta.id}};
-      try {
-        const response = await fetch('/question/update-resolvido/{{pergunta.id}}', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        const data = await response.json();
-        if(response.ok) {
-          console.log(data.message);
-        } else {
-          console.error(data.message);
-        }
-      } catch(error) {
-        console.error('Erro ao enviar solicitação:', error);
-      }
 
       if (resposta) {
         aux = resposta.value;
-        console.log(aux)
-        console.log(typeof aux)
         if(aux == '{{pergunta.opcaoCerta}}')
         {
           var novoParagrafo = document.createElement('p');
@@ -143,6 +125,22 @@
           novoParagrafo.classList.add('correta');
           div.appendChild(novoParagrafo);
           botao.disabled = true;
+          try {
+            const response = await fetch('/question/update-resolvido/{{pergunta.id}}', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+            });
+            const data = await response.json();
+            if(response.ok) {
+              console.log(data.message);
+            } else {
+              console.error(data.message);
+            }
+          } catch(error) {
+            console.error('Erro ao enviar solicitação:', error);
+          }
         }else{
           var novoParagrafo = document.createElement('p');
           novoParagrafo.innerText = "Resposta Errada."
