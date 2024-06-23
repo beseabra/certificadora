@@ -101,19 +101,33 @@
                 {{#perguntas}}
                 if(spanValor == {{ id }})
                 {
+                    var liberado = {{ liberado }};
+                }
+                {{/perguntas}}
+                {{#resolucoes}}
+                if(spanValor == {{ perguntaId }})
+                {
                     var aux = {{ resolvido }};
-                    if(aux)
+                    var qtd = {{ quantidade }};
+                    if(qtd >= 5){
+                        var tentativaMaxima = confirm("Você já resolveu essa questão mais de 5 vezes!");
+                    }
+                    else if(aux)
                     {
                         var userConfirmed = confirm("Você já resolveu essa questão, quer resolver novamente?");
 
                         if(userConfirmed){
                             window.location.href = link.href;
                         }
-                    }else{
+                    }else if(!liberado)
+                    {
+                        var perguntaBloqueada = confirm("Questoes desse nivel estao bloqueadas!");
+                    }
+                    else{
                         window.location.href = link.href;
                     }
                 }
-                {{/perguntas}}
+                {{/resolucoes}}
             });
         });
     });
