@@ -55,6 +55,22 @@
                 width: 100%; /* Altera a largura para 100% em telas menores */
             }
         }
+        /* Novo estilo para o painel de pontuação */
+        .score-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #pontuacao {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -69,6 +85,12 @@
     </select>
     <button type="submit">Filtrar</button>
 </form>
+
+<!-- Painel de Pontuação -->
+<div class="score-container">
+    <strong>Sua Pontuação: </strong>
+    <span id="pontuacao">{{usuario.pontuacao}}</span>
+</div>
 
 <h1>Lista de Perguntas <button onclick="reordenarPerguntas()">Reordenar</button></h1>
 
@@ -85,7 +107,6 @@
 </div>
 
 <script>
-
     document.addEventListener('DOMContentLoaded', function(){
 
         var confirmLinks = document.querySelectorAll('.btn-confirm');
@@ -131,6 +152,7 @@
             });
         });
     });
+
     function reordenarPerguntas() {
         var perguntasContainer = document.getElementById('perguntas-container');
         var perguntas = perguntasContainer.querySelectorAll('.question-container');

@@ -8,6 +8,7 @@ require("dotenv").config();
 
 const perguntasModel = require('./model/perguntas');
 const { list, getResolucao, updateResolvido, updateQtdResolucao } = require('./model/resolucao');
+const { updatePontuacao, getUsuario } = require('./model/usuarios');
 
 const app = express();
 
@@ -33,10 +34,11 @@ app.get('/', async (req, res) => {
     }
     // Recupera todas as perguntas do banco de dados
     const perguntas = await perguntasModel.list(filtro);
-    const resolucoes = await list({ usuarioId: 1 })
+    const resolucoes = await list({ usuarioId: 1 });
+    const usuario = await getUsuario('1');
 
     // Renderiza o template Mustache e passa os dados das perguntas
-    res.render('index', { perguntas: perguntas, resolucoes: resolucoes });
+    res.render('index', { perguntas: perguntas, resolucoes: resolucoes, usuario: usuario });
   } catch (error) {
     console.error('Erro ao recuperar perguntas:', error);
     res.status(500).send('Erro ao carregar perguntas');
@@ -73,7 +75,10 @@ app.listen(3000, () => {
 // Rota para atualizar quando uma questão é resolvida
 app.post('/question/update-resolvido/:id', async (req, res) => {
   const id = req.params.id;
+  console.log(id);
+  console.log(typeof('1'));
   try {
+    const autalizaPontuacao = await updatePontuacao('1', id);
     const updateQuestion = await updateResolvido(id);
     const atualizaQtd = await updateQtdResolucao(id);
     const autalizaLibera = await perguntasModel.liberaPergunta(id);
