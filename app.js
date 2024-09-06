@@ -82,6 +82,7 @@ app.post('/question/update-resolvido/:id', async (req, res) => {
     const updateQuestion = await updateResolvido(id);
     const atualizaQtd = await updateQtdResolucao(id);
     const autalizaLibera = await perguntasModel.liberaPergunta(id);
+    const atualizaResolvido = await perguntasModel.atualizaNivel(id);
     
     if (updateQuestion) {
       res.json({ status: "sucess", message: "Pergunta resolvida atualizada com sucesso" });

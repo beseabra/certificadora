@@ -98,6 +98,12 @@ module.exports = {
     }
     return null;
   },
+
+  atualizaNivel: async function(id) {
+    const pergunta  = await PerguntaModel.findByPk(id);
+
+    await pergunta.update({nivel: 0});
+  },
   
   // Exporta o Model
   Model: PerguntaModel
